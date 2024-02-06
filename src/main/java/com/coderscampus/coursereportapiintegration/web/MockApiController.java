@@ -12,24 +12,10 @@ import java.util.Map;
 public class MockApiController {
 
     @GetMapping("/mock-api")
-    public ResponseEntity<Map<String, Object>> fetchData () {
+    public ResponseEntity<String> fetchData () {
 
-        Map<String, Object> matches = Map.of(
-                "matches", List.of(
-                        new MatchDto("John Doe", "john.doe@example.com", "+1 555-0100", "Beginner", "Part Time", "Online", true, "February 4, 2024 at 9:19am UTC", "Full Stack Developer"),
-                        new MatchDto("Jane Smith", "jane.smith@example.com", "+1 555-0101", "Beginner", "Part Time", "Online", true, "February 4, 2024 at 7:33am UTC", "Full Stack Developer"),
-                        new MatchDto("Alex Johnson", "alex.johnson@example.com", "+1 555-0102", "Beginner", "Part Time", "Online", true, "February 4, 2024 at 2:49am UTC", "Full Stack Developer"),
-                        new MatchDto("Emily Davis", "emily.davis@example.com", "+1 555-0103", "Some Experience", "Full Time", "Online", true, "February 3, 2024 at10:24pm UTC", "Full Stack Developer")
-                ),
-                "meta", Map.of(
-                        "pagination", Map.of(
-                                "current_page", "1",
-                                "per_page", "25",
-                                "total_pages", 1,
-                                "total_objects", 4
-                        )
-                )
-        );
+        String matches = "{\"matches\":[{\"full_name\":\"John Doe\",\"phone_number\":\"+1 555-0100\",\"created_at\":\"February 4, 2024 at 9:19am UTC\",\"email\":\"john.doe@example.com\",\"experience\":\"Beginner\",\"availability\":\"Part Time\",\"location\":\"Online\",\"online\":true,\"track\":\"Full Stack Developer\"},{\"full_name\":\"Jane Smith\",\"phone_number\":\"+1 555-0101\",\"created_at\":\"February 4, 2024 at 7:33am UTC\",\"email\":\"jane.smith@example.com\",\"experience\":\"Beginner\",\"availability\":\"Part Time\",\"location\":\"Online\",\"online\":true,\"track\":\"Full Stack Developer\"},{\"full_name\":\"Alex Johnson\",\"phone_number\":\"+1 555-0102\",\"created_at\":\"February 4, 2024 at 2:49am UTC\",\"email\":\"alex.johnson@example.com\",\"experience\":\"Beginner\",\"availability\":\"Part Time\",\"location\":\"Online\",\"online\":true,\"track\":\"Full Stack Developer\"},{\"full_name\":\"Emily Davis\",\"phone_number\":\"+1 555-0103\",\"created_at\":\"February 3, 2024 at 10:24pm UTC\",\"email\":\"emily.davis@example.com\",\"experience\":\"Some Experience\",\"availability\":\"Full Time\",\"location\":\"Online\",\"online\":true,\"track\":\"Full Stack Developer\"}],\"meta\":{\"pagination\":{\"current_page\":\"1\",\"total_objects\":4,\"total_pages\":1,\"per_page\":\"25\"}}}";
+
         return ResponseEntity.ok(matches);
     }
 }
