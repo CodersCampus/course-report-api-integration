@@ -38,6 +38,8 @@ public class CourseReportService {
                 }, () -> {
                     // 2b. if "lead" doesn't exist, then persist it to DB and post a message to slack
                     System.out.println("No match found");
+                    Match persistedMatch = new Match(match.email(), match.createdAt(), match.fullName(), match.phoneNumber());
+                    matchRepository.save(persistedMatch);
                 });
 
 

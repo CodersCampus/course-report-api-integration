@@ -8,6 +8,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "contact_match")
 public class Match {
+
+    public Match(String email, LocalDateTime createdAt, String fullName, String phoneNumber) {
+        this.email = email;
+        this.createdAt = createdAt;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Match() {
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
