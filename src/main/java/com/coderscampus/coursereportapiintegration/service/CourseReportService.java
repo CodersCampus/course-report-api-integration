@@ -29,16 +29,21 @@ public class CourseReportService {
 
         if (data != null) {
             // 1. iterate through response
-            for (MatchDto match : data.matches()) {
+            for (MatchDto apiMatch : data.matches()) {
                 // 2. check to see if this "lead" already exists
-                Optional<Match> aMatchOpt = matchRepository.findByEmail(match.email());
-                aMatchOpt.ifPresentOrElse(aMatch -> {
+                Optional<Match> dbMatchOpt = matchRepository.findByEmail(apiMatch.email());
+                dbMatchOpt.ifPresentOrElse(dbMatch -> {
                     // 2a. if "lead" exists, and the created date is within the range of the querying date then ignore it, otherwise post a "modified" message to slack
-                    System.out.println(aMatch);
+                    if (!dbMatch.getCreatedAt().equals(apiMatch.createdAt())) {
+                        System.out.println("We should send a message to slack for match: " + dbMatch);
+                        dbMatch.setCreatedAt(apiMatch.createdAt());
+                        matchRepository.save(dbMatch);
+                    }
+
                 }, () -> {
                     // 2b. if "lead" doesn't exist, then persist it to DB and post a message to slack
-                    System.out.println("No match found");
-                    Match persistedMatch = new Match(match.email(), match.createdAt(), match.fullName(), match.phoneNumber());
+                    System.out.println("No apiMatch found");
+                    Match persistedMatch = new Match(apiMatch.email(), apiMatch.createdAt(), apiMatch.fullName(), apiMatch.phoneNumber());
                     matchRepository.save(persistedMatch);
                 });
 
