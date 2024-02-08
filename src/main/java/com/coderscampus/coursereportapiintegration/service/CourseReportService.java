@@ -30,6 +30,11 @@ public class CourseReportService {
         if (data != null) {
             // 1. iterate through response
             for (MatchDto apiMatch : data.matches()) {
+                String m = """
+                            Full name: %s \s
+                            Email Address: %s\s
+                            Phone Number: %s""";
+                final String message = String.format(m, apiMatch.fullName(), apiMatch.email(), apiMatch.phoneNumber());
                 // 2. check to see if this "lead" already exists
                 Optional<Match> dbMatchOpt = matchRepository.findByEmail(apiMatch.email());
                 dbMatchOpt.ifPresentOrElse(dbMatch -> {
@@ -38,6 +43,7 @@ public class CourseReportService {
                         System.out.println("We should send a message to slack for match: " + dbMatch);
                         dbMatch.setCreatedAt(apiMatch.createdAt());
                         matchRepository.save(dbMatch);
+                        SlackBot.postMessage("Lead re-opted in: \n"+message);
                     }
 
                 }, () -> {
@@ -45,6 +51,8 @@ public class CourseReportService {
                     System.out.println("No apiMatch found");
                     Match persistedMatch = new Match(apiMatch.email(), apiMatch.createdAt(), apiMatch.fullName(), apiMatch.phoneNumber());
                     matchRepository.save(persistedMatch);
+
+                    SlackBot.postMessage(message);
                 });
 
 
