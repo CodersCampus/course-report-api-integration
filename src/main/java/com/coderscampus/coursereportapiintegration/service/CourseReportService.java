@@ -5,6 +5,9 @@ import com.coderscampus.coursereportapiintegration.dto.response.CourseReportApiR
 import com.coderscampus.coursereportapiintegration.entity.Match;
 import com.coderscampus.coursereportapiintegration.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +28,9 @@ public class CourseReportService {
     @Value("${api.url}")
     private final String COURSE_REPORT_API_URL = null;
 
+    @Value("${api.key}")
+    private final String COURSE_REPORT_API_KEY = null;
+
     public CourseReportService(MatchRepository matchRepository, SlackBot slackBot) {
         this.matchRepository = matchRepository;
         this.slackBot = slackBot;
@@ -40,7 +46,12 @@ public class CourseReportService {
         String dateStart = formatter.format(now);
         String dateEnd = formatter.format(twoDaysAgo);
 
-        ResponseEntity<CourseReportApiResponse> response = rt.getForEntity(COURSE_REPORT_API_URL+"?page=1&per_page=1000&date_start="+dateStart+"&date_end="+dateEnd, CourseReportApiResponse.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", COURSE_REPORT_API_KEY);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<CourseReportApiResponse> response = rt.exchange(COURSE_REPORT_API_URL+"?page=1&per_page=1000&date_start="+dateStart+"&date_end="+dateEnd, HttpMethod.GET, entity, CourseReportApiResponse.class);
         CourseReportApiResponse data = response.getBody();
 
         if (data != null) {
