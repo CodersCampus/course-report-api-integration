@@ -50,10 +50,12 @@ public class CourseReportService {
         headers.set("Authorization", COURSE_REPORT_API_KEY);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
+        String url = COURSE_REPORT_API_URL+"?page=1&per_page=1000&date_start="+dateStart+"&date_end="+dateEnd;
+        System.out.println("About to call the course report api via: " + url);
+        ResponseEntity<CourseReportApiResponse> response = rt.exchange(url, HttpMethod.GET, entity, CourseReportApiResponse.class);
 
-        ResponseEntity<CourseReportApiResponse> response = rt.exchange(COURSE_REPORT_API_URL+"?page=1&per_page=1000&date_start="+dateStart+"&date_end="+dateEnd, HttpMethod.GET, entity, CourseReportApiResponse.class);
         CourseReportApiResponse data = response.getBody();
-
+        System.out.println("Received response: " + data);
         if (data != null) {
             // 1. iterate through response
             for (MatchDto apiMatch : data.matches()) {
