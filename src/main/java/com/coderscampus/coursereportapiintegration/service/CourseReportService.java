@@ -4,6 +4,7 @@ import com.coderscampus.coursereportapiintegration.dto.MatchDto;
 import com.coderscampus.coursereportapiintegration.dto.response.CourseReportApiResponse;
 import com.coderscampus.coursereportapiintegration.entity.Match;
 import com.coderscampus.coursereportapiintegration.repository.MatchRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +22,8 @@ public class CourseReportService {
 
     private MatchRepository matchRepository;
     private SlackBot slackBot;
+    @Value("${api.url}")
+    private final String COURSE_REPORT_API_URL = null;
 
     public CourseReportService(MatchRepository matchRepository, SlackBot slackBot) {
         this.matchRepository = matchRepository;
@@ -37,7 +40,7 @@ public class CourseReportService {
         String dateStart = formatter.format(now);
         String dateEnd = formatter.format(twoDaysAgo);
 
-        ResponseEntity<CourseReportApiResponse> response = rt.getForEntity("http://localhost:8080/mock-api?page=1&per_page=1000&date_start="+dateStart+"&date_end="+dateEnd, CourseReportApiResponse.class);
+        ResponseEntity<CourseReportApiResponse> response = rt.getForEntity(COURSE_REPORT_API_URL+"?page=1&per_page=1000&date_start="+dateStart+"&date_end="+dateEnd, CourseReportApiResponse.class);
         CourseReportApiResponse data = response.getBody();
 
         if (data != null) {
