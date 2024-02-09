@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Component
 public class CourseReportScheduler {
     private CourseReportService courseReportService;
-    private final String apiPingRate = "300000";
 
     public CourseReportScheduler(CourseReportService courseReportService) {
         this.courseReportService = courseReportService;
