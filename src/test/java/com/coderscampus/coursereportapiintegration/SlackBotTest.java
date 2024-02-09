@@ -4,10 +4,10 @@ import com.coderscampus.coursereportapiintegration.service.SlackBot;
 import org.junit.jupiter.api.Test;
 
 public class SlackBotTest {
-
+    private SlackBot sut = new SlackBot();
 
     @Test
     public void slack_post_message_test () {
-        SlackBot.postMessage("Test message 3");
+        sut.postMessage("Test message 3");
     }
 }

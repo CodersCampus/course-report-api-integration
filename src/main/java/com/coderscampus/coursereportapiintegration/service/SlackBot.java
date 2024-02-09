@@ -1,19 +1,22 @@
 package com.coderscampus.coursereportapiintegration.service;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@Component
 public class SlackBot {
+    @Value("${slack.bot.token}")
+    private final String TOKEN = null;
+    @Value("${slack.channelId}")
+    private final String CHANNEL_ID = null;
+    private final String SLACK_API_URL = "https://slack.com/api/chat.postMessage";
 
-    // Replace with your bot token and channel ID
-    private static final String TOKEN = "xoxb-6630589301536-6630649693296-bAEIP0LPNA95kqod7m5xrb3i";
-    private static final String CHANNEL_ID = "C06HF798AUF";
-    private static final String SLACK_API_URL = "https://slack.com/api/chat.postMessage";
-
-    public static void postMessage(String message) {
+    public void postMessage(String message) {
         try {
             URL url = new URL(SLACK_API_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

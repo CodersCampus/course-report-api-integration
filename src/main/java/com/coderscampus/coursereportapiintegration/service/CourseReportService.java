@@ -20,9 +20,11 @@ import java.util.Optional;
 public class CourseReportService {
 
     private MatchRepository matchRepository;
+    private SlackBot slackBot;
 
-    public CourseReportService(MatchRepository matchRepository) {
+    public CourseReportService(MatchRepository matchRepository, SlackBot slackBot) {
         this.matchRepository = matchRepository;
+        this.slackBot = slackBot;
     }
 
     public void pollCourseReportApi () {
@@ -54,7 +56,7 @@ public class CourseReportService {
                         System.out.println("We should send a message to slack for match: " + dbMatch);
                         dbMatch.setCreatedAt(apiMatch.createdAt());
                         matchRepository.save(dbMatch);
-                        SlackBot.postMessage("Lead re-opted in: \n"+message);
+                        slackBot.postMessage("Lead re-opted in: \n"+message);
                     }
 
                 }, () -> {
@@ -63,7 +65,7 @@ public class CourseReportService {
                     Match persistedMatch = new Match(apiMatch.email(), apiMatch.createdAt(), apiMatch.fullName(), apiMatch.phoneNumber());
                     matchRepository.save(persistedMatch);
 
-                    SlackBot.postMessage(message);
+                    slackBot.postMessage(message);
                 });
 
 
