@@ -43,8 +43,8 @@ public class CourseReportService {
         LocalDate now = LocalDate.now();
         LocalDate twoDaysAgo = now.minusDays(2);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dateStart = formatter.format(now);
-        String dateEnd = formatter.format(twoDaysAgo);
+        String dateEnd = formatter.format(now);
+        String dateStart = formatter.format(twoDaysAgo);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", COURSE_REPORT_API_KEY);
