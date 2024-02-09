@@ -48,6 +48,7 @@ public class CourseReportService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", COURSE_REPORT_API_KEY);
+        headers.set("Accept", "application/vnd.coursereport.v2");
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
         String url = COURSE_REPORT_API_URL+"?page=1&per_page=1000&date_start="+dateStart+"&date_end="+dateEnd;
