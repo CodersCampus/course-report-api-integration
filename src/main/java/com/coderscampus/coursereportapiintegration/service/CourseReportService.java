@@ -8,7 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -24,7 +29,13 @@ public class CourseReportService {
         System.out.println("Polling Course Report API: " + LocalDateTime.now());
         RestTemplate rt = new RestTemplate();
 
-        ResponseEntity<CourseReportApiResponse> response = rt.getForEntity("http://localhost:8080/mock-api", CourseReportApiResponse.class);
+        LocalDate now = LocalDate.now();
+        LocalDate twoDaysAgo = now.minusDays(2);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dateStart = formatter.format(now);
+        String dateEnd = formatter.format(twoDaysAgo);
+
+        ResponseEntity<CourseReportApiResponse> response = rt.getForEntity("http://localhost:8080/mock-api?page=1&per_page=1000&date_start="+dateStart+"&date_end="+dateEnd, CourseReportApiResponse.class);
         CourseReportApiResponse data = response.getBody();
 
         if (data != null) {
