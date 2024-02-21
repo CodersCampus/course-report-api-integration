@@ -73,7 +73,7 @@ public class CourseReportService {
                         System.out.println("We should send a message to slack for match: " + dbMatch);
                         dbMatch.setCreatedAt(apiMatch.createdAt());
                         matchRepository.save(dbMatch);
-                        slackBot.postMessage("Lead re-opted in: \n"+message);
+//                        slackBot.postMessage("Lead re-opted in: \n"+message);
                     }
 
                 }, () -> {
@@ -82,7 +82,7 @@ public class CourseReportService {
                     Match persistedMatch = new Match(apiMatch.email(), apiMatch.createdAt(), apiMatch.fullName(), apiMatch.phoneNumber());
                     matchRepository.save(persistedMatch);
 
-                    slackBot.postMessage(message);
+//                    slackBot.postMessage(message);
                 });
 
 
